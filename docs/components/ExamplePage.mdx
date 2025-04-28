@@ -1,21 +1,21 @@
 # ExamplePage View
 
-Demonstrates the integration of `PageLayout` and the custom `FullHeightLayer` component.
+Demonstrates the integration of a direct header/main layout and the custom `FullHeightLayer` component.
 
 ## Description
 
 This view (`src/views/ExamplePage.tsx`) shows how to use the core layout components:
 
 1.  It manages the visibility state (`isLayerVisible`) for the `FullHeightLayer`.
-2.  It defines `headerContent` for the `PageLayout`, including a toggle button that controls the `isLayerVisible` state.
-3.  It renders `<PageLayout>` passing the `headerContent`.
-4.  Inside `PageLayout`, it renders the main page content and the `<FullHeightLayer>`, passing the `isVisible` state and `headerHeight`.
+2.  It defines `headerContent` for the fixed header, including a toggle button that controls the `isLayerVisible` state.
+3.  It renders the header, main content, and the `<FullHeightLayer>` directly (no `PageLayout`).
+4.  The browser tab title is set to "Full Height" via app metadata.
 
 ## Purpose
 
 *   Illustrates state lifting for controlling `FullHeightLayer` visibility from a parent.
 *   Shows how to integrate custom controls (like the header toggle button) with the layout components.
-*   Provides a practical example of rendering the `PageLayout` and `FullHeightLayer` together.
+*   Provides a practical example of rendering a fixed header, main content, and `FullHeightLayer` together.
 
 ## Code Snippet (`src/views/ExamplePage.tsx`)
 
@@ -23,7 +23,6 @@ This view (`src/views/ExamplePage.tsx`) shows how to use the core layout compone
 'use client';
 
 import React, { useState } from 'react';
-import { PageLayout } from '@/components/PageLayout/PageLayout';
 import { FullHeightLayer } from '@/components/FullHeightLayer/FullHeightLayer';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -57,8 +56,14 @@ export default function ExamplePage() {
   );
 
   return (
-    <PageLayout headerContent={headerContent}>
-      <div className="flex h-full">
+    <div className="flex flex-col min-h-screen">
+      <header
+        className="fixed top-0 left-0 right-0 z-10 bg-blue-200 border-b h-[64px] flex items-center px-4"
+        style={{ '--header-height': `${HEADER_HEIGHT}px` } as React.CSSProperties}
+      >
+        {headerContent}
+      </header>
+      <main className="flex h-full pt-[64px]">
         <div className="flex-1 p-4">
           {/* Main Content */}
         </div>
@@ -67,8 +72,8 @@ export default function ExamplePage() {
           headerHeight={HEADER_HEIGHT}
           isVisible={isLayerVisible}
         />
-      </div>
-    </PageLayout>
+      </main>
+    </div>
   );
 }
 ```
@@ -76,4 +81,6 @@ export default function ExamplePage() {
 ## Key Points
 
 *   The parent component (`ExamplePage`) is responsible for managing and toggling the `isVisible` state of the `FullHeightLayer`.
-*   The `headerHeight` constant needs to be passed correctly to `FullHeightLayer` for proper positioning. 
+*   The `headerHeight` constant needs to be passed correctly to `FullHeightLayer` for proper positioning.
+*   The layout now uses a direct header/main structure, not a `PageLayout` abstraction.
+*   The browser tab title is set to "Full Height" for clarity. 
