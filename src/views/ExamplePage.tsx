@@ -40,7 +40,7 @@ export default function ExamplePage() {
   return (
     <div className="flex flex-col min-h-screen">
       <header
-        className="fixed top-0 left-0 right-0 z-10 bg-purple-500 border-b h-[64px] flex items-center px-4"
+        className="fixed top-0 left-0 right-0 z-10 bg-blue-200 border-b h-[64px] flex items-center px-4"
         style={{ '--header-height': `${HEADER_HEIGHT}px` } as React.CSSProperties}
       >
         {headerContent}
