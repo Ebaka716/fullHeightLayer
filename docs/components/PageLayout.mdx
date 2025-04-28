@@ -1,0 +1,50 @@
+# PageLayout Component
+
+Provides the basic page structure with a fixed header and a main content area.
+
+## Description
+
+The `PageLayout` component renders a container that spans the full screen height. It includes a fixed header at the top and yields the remaining space to its children, ensuring content starts directly below the header.
+
+## Props
+
+| Prop            | Type          | Default           | Description                                                                               |
+| --------------- | ------------- | ----------------- | ----------------------------------------------------------------------------------------- |
+| `headerContent` | `ReactNode`   | `<div>App Header</div>` | Custom content to render inside the header. Typically includes app title and controls.    |
+| `children`      | `ReactNode`   | **Required**      | The main content to render below the header.                                              |
+
+## Usage Example
+
+```tsx
+// In a page component like ExamplePage.tsx
+import { PageLayout } from '@/components/PageLayout/PageLayout';
+import { FullHeightLayer } from '@/components/FullHeightLayer/FullHeightLayer';
+import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+
+const HEADER_HEIGHT = 64;
+
+function MyPage() {
+  const [isLayerVisible, setIsLayerVisible] = useState(true);
+
+  const headerContent = (
+    <div className="flex items-center justify-between w-full">
+      <span>My App Title</span>
+      <Button onClick={() => setIsLayerVisible(!isLayerVisible)}>Toggle Layer</Button>
+    </div>
+  );
+
+  return (
+    <PageLayout headerContent={headerContent}>
+      {/* Page content here */}
+      <FullHeightLayer isVisible={isLayerVisible} headerHeight={HEADER_HEIGHT} />
+    </PageLayout>
+  );
+}
+```
+
+## Implementation Notes
+
+*   The header height is defined by a constant (`HEADER_HEIGHT`) (currently 64px).
+*   The header uses `position: fixed` and has a `z-index` to stay on top.
+*   The main content area uses `padding-top` to avoid being obscured by the fixed header. 

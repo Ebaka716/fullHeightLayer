@@ -1,0 +1,60 @@
+# FullHeightLayer Component
+
+A right-aligned, resizable layer built into the page layout, positioned below the main application header.
+
+## Description
+
+The `FullHeightLayer` component renders a `position: fixed` container on the right side, starting below the main header. Its visibility is controlled externally via a prop (`isVisible`). It features:
+
+*   Smooth slide-in/out transition.
+*   A draggable left edge for horizontal resizing.
+*   An internal header with a title and a menu button.
+*   A menu button that toggles a full-height "takeover" view sliding in from the left.
+*   Scrollable main content area.
+
+## Wireframe / Screenshot
+
+*(Placeholder: Update screenshot/wireframe needed for resizing and menu view)*
+
+```
++---------------------------------------------+
+| App Header (Fixed)           [Toggle Btn] |
++======================+======================+
+| Main Content Area    || Layer Header         |
+|                      || [MenuBtn] [Title]    |
+|                      |+----------------------+
+|                      || Layer Content        |
+|                      || (Scrollable)         |
+|                      ||                      |
+|                      ||                      |
+|                      ||                      |
++----------------------++======================+
+                       ^ Resize Handle
+
+Menu View (slides over Layer Content):
++----------------------+
+| [Menu Title]         |
++----------------------+
+| [New Search Btn]     |
+| [History Btn]        |
+| ...                  |
+| [Settings Btn]       |
++----------------------+
+```
+
+## Props
+
+| Prop           | Type         | Default        | Description                                                    |
+| -------------- | ------------ | -------------- | -------------------------------------------------------------- |
+| `title`        | `ReactNode`  | `'Layer Title'`| Content for the layer's header title area.                     |
+| `headerHeight` | `number`     | **Required**   | The height of the main application header (in pixels).         |
+| `isVisible`    | `boolean`    | **Required**   | Controls the visibility and slide transition of the layer.     |
+
+## Behavior
+
+*   **Visibility & Transition:** Controlled by the `isVisible` prop. Uses CSS transform (`translate-x-full`) and transition classes for smooth sliding.
+*   **Positioning:** Uses `position: fixed` with `top`, `right`, `bottom` CSS properties. `top` is offset by `headerHeight`.
+*   **Resizing:** The left edge (`div` with `cursor-ew-resize`) can be dragged horizontally. Width is managed by internal state (`layerWidth`) and clamped between min/max values.
+*   **Menu Button:** Toggles internal `isMenuViewOpen` state.
+*   **Menu Takeover View:** Slides in from the left (`-translate-x-full`) over the main layer content when `isMenuViewOpen` is true. Contains placeholder navigation buttons.
+*   **Scrolling:** The main content area (`Layer Content Area...`) scrolls vertically if needed. 

@@ -1,0 +1,79 @@
+# ExamplePage View
+
+Demonstrates the integration of `PageLayout` and the custom `FullHeightLayer` component.
+
+## Description
+
+This view (`src/views/ExamplePage.tsx`) shows how to use the core layout components:
+
+1.  It manages the visibility state (`isLayerVisible`) for the `FullHeightLayer`.
+2.  It defines `headerContent` for the `PageLayout`, including a toggle button that controls the `isLayerVisible` state.
+3.  It renders `<PageLayout>` passing the `headerContent`.
+4.  Inside `PageLayout`, it renders the main page content and the `<FullHeightLayer>`, passing the `isVisible` state and `headerHeight`.
+
+## Purpose
+
+*   Illustrates state lifting for controlling `FullHeightLayer` visibility from a parent.
+*   Shows how to integrate custom controls (like the header toggle button) with the layout components.
+*   Provides a practical example of rendering the `PageLayout` and `FullHeightLayer` together.
+
+## Code Snippet (`src/views/ExamplePage.tsx`)
+
+```tsx
+'use client';
+
+import React, { useState } from 'react';
+import { PageLayout } from '@/components/PageLayout/PageLayout';
+import { FullHeightLayer } from '@/components/FullHeightLayer/FullHeightLayer';
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+const HEADER_HEIGHT = 64;
+
+export default function ExamplePage() {
+  const [isLayerVisible, setIsLayerVisible] = useState(true);
+
+  const toggleLayerVisibility = () => {
+    setIsLayerVisible(!isLayerVisible);
+  };
+
+  const headerContent = (
+    <div className="flex items-center justify-between w-full">
+      <span className="text-lg font-semibold">My App</span>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={toggleLayerVisibility}
+        aria-label={isLayerVisible ? "Collapse Layer" : "Expand Layer"}
+        className={cn(isLayerVisible && "bg-accent text-accent-foreground")}
+      >
+        {/* Icon SVG */}
+        <svg width="20" height="20" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.6668 1.6665..." stroke="currentColor" />
+          <path d="M9 1.6665V16.3332" stroke="currentColor" />
+        </svg>
+      </Button>
+    </div>
+  );
+
+  return (
+    <PageLayout headerContent={headerContent}>
+      <div className="flex h-full">
+        <div className="flex-1 p-4">
+          {/* Main Content */}
+        </div>
+        <FullHeightLayer
+          title="Details Panel"
+          headerHeight={HEADER_HEIGHT}
+          isVisible={isLayerVisible}
+        />
+      </div>
+    </PageLayout>
+  );
+}
+```
+
+## Key Points
+
+*   The parent component (`ExamplePage`) is responsible for managing and toggling the `isVisible` state of the `FullHeightLayer`.
+*   The `headerHeight` constant needs to be passed correctly to `FullHeightLayer` for proper positioning. 
