@@ -1,12 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { PageLayout } from '@/components/PageLayout/PageLayout';
 import { FullHeightLayer } from '@/components/FullHeightLayer/FullHeightLayer';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// Header height still needed by PageLayout, but not directly by AppSidebar
+// Header height still needed for FullHeightLayer
 const HEADER_HEIGHT = 64;
 
 export default function ExamplePage() {
@@ -22,12 +21,6 @@ export default function ExamplePage() {
   const headerContent = (
     <div className="flex items-center justify-between w-full">
       <span className="text-lg font-semibold">My App</span>
-      {/* Remove Nav */}
-      {/* <nav>
-        <span className="mr-4">Home</span>
-        <span>About</span>
-      </nav> */}
-
       {/* Add Collapse/Uncollapse Button */}
       <Button
         variant="ghost"
@@ -45,8 +38,14 @@ export default function ExamplePage() {
   );
 
   return (
-    <PageLayout headerContent={headerContent}>
-      <div className="flex h-full">
+    <div className="flex flex-col min-h-screen">
+      <header
+        className="fixed top-0 left-0 right-0 z-10 bg-purple-500 border-b h-[64px] flex items-center px-4"
+        style={{ '--header-height': `${HEADER_HEIGHT}px` } as React.CSSProperties}
+      >
+        {headerContent}
+      </header>
+      <main className="flex h-full pt-[64px]">
         {/* Main Page Content Area */}
         <div className="flex-1 p-4">
           <h1 className="text-2xl font-bold mb-4">Main Content Area</h1>
@@ -60,7 +59,7 @@ export default function ExamplePage() {
           headerHeight={HEADER_HEIGHT}
           isVisible={isLayerVisible}
         />
-      </div>
-    </PageLayout>
+      </main>
+    </div>
   );
 } 
