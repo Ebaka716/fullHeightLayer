@@ -7,27 +7,30 @@ A right-aligned, resizable layer built into the page layout, positioned below th
 The `FullHeightLayer` component renders a `position: fixed` container on the right side, starting below the main header. Its visibility is controlled externally via a prop (`isVisible`). It features:
 
 *   Smooth slide-in/out transition.
-*   A draggable left edge for horizontal resizing.
-*   An internal header with a title and a menu button.
+*   A draggable left edge for horizontal resizing (min 450px, max 75% of viewport).
+*   An internal header with a title, styled menu button (orange), and styled close button (red).
+*   A close button (`X`) that triggers the `onClose` prop.
 *   A menu button that toggles a full-height "takeover" view sliding in from the left.
-*   Scrollable main content area.
+*   The internal menu view contains buttons with icons (`lucide-react`).
+*   A main content area with a bottom-aligned, full-width input field including a Send icon.
+*   Scrollable main content area (if content overflows above the input).
 
 ## Wireframe / Screenshot
 
-*(Placeholder: Update screenshot/wireframe needed for resizing and menu view)*
+*(Placeholder: Update screenshot/wireframe needed for resizing, menu view, styled buttons, and input field)*
 
 ```
 +---------------------------------------------+
 | App Header (Fixed)           [Toggle Btn] |
 +======================+======================+
 | Main Content Area    || Layer Header         |
-|                      || [MenuBtn] [Title]    |
+|                      || [🍊Menu] [Title] [X🟥] |
 |                      |+----------------------+
+|                      ||                      |
 |                      || Layer Content        |
 |                      || (Scrollable)         |
 |                      ||                      |
-|                      ||                      |
-|                      ||                      |
+|                      || [  Input...  [➤]  ] |
 +----------------------++======================+
                        ^ Resize Handle
 
@@ -35,26 +38,65 @@ Menu View (slides over Layer Content):
 +----------------------+
 | [Menu Title]         |
 +----------------------+
-| [New Search Btn]     |
-| [History Btn]        |
+| [🔍 New Search Btn]  |
+| [🕒 History Btn]     |
 | ...                  |
-| [Settings Btn]       |
+| [⚙️ Settings Btn]    |
 +----------------------+
 ```
 
 ## Props
 
-| Prop           | Type         | Default        | Description                                                    |
-| -------------- | ------------ | -------------- | -------------------------------------------------------------- |
-| `title`        | `ReactNode`  | `'Layer Title'`| Content for the layer's header title area.                     |
-| `headerHeight` | `number`     | **Required**   | The height of the main application header (in pixels).         |
-| `isVisible`    | `boolean`    | **Required**   | Controls the visibility and slide transition of the layer.     |
+| Prop           | Type              | Default        | Description                                                                |
+| -------------- | ----------------- | -------------- | -------------------------------------------------------------------------- |
+| `title`        | `React.ReactNode` | `'Layer Title'`| Content for the layer's header title area.                                 |
+| `headerHeight` | `number`          | **Required**   | The height of the main application header (in pixels).                     |
+| `isVisible`    | `boolean`         | **Required**   | Controls the visibility and slide transition of the layer.                 |
+| `onClose`      | `() => void`      | **Required**   | Callback function triggered when the layer's close button (X) is clicked. |
 
 ## Behavior
 
 *   **Visibility & Transition:** Controlled by the `isVisible` prop. Uses CSS transform (`translate-x-full`) and transition classes for smooth sliding.
 *   **Positioning:** Uses `position: fixed` with `top`, `right`, `bottom` CSS properties. `top` is offset by `headerHeight`.
-*   **Resizing:** The left edge (`div` with `cursor-ew-resize`) can be dragged horizontally. Width is managed by internal state (`layerWidth`) and clamped between min/max values.
-*   **Menu Button:** Toggles internal `isMenuViewOpen` state.
-*   **Menu Takeover View:** Slides in from the left (`-translate-x-full`) over the main layer content when `isMenuViewOpen` is true. Contains placeholder navigation buttons.
-*   **Scrolling:** The main content area (`Layer Content Area...`) scrolls vertically if needed. 
+*   **Resizing:** The left edge (`div` with `cursor-ew-resize`) can be dragged horizontally. Width is managed by internal state (`layerWidth`) and clamped between `MIN_LAYER_WIDTH` (450px) and dynamically calculated 75% of the window width.
+*   **Header Buttons:**
+    *   **Close Button (Red X):** Triggers the `onClose` function passed via props.
+    *   **Menu Button (Orange):** Toggles internal `isMenuViewOpen` state.
+*   **Menu Takeover View:** Slides in from the left (`-translate-x-full`) over the main layer content when `isMenuViewOpen` is true. Contains placeholder navigation buttons with `lucide-react` icons.
+*   **Input Field:** Positioned at the bottom of the main content area using Flexbox (`items-end`), spans the width respecting container padding (`px-6`). Contains an absolutely positioned `Send` icon.
+*   **Scrolling:** The main content area scrolls vertically if needed, preserving the bottom input field's position.
+
+## Usage Example
+
+```tsx
+// In a parent component like src/views/ExamplePage.tsx
+'use client';
+
+import React, { useState } from 'react';
+import { FullHeightLayer } from '@/components/FullHeightLayer/FullHeightLayer';
+
+const HEADER_HEIGHT = 64;
+
+export default function MyPage() {
+  const [isLayerVisible, setIsLayerVisible] = useState(true);
+
+  const toggleLayerVisibility = () => {
+    setIsLayerVisible(!isLayerVisible);
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <header style={{ height: HEADER_HEIGHT }}>App Header</header>
+      <main className="flex flex-1 pt-[${HEADER_HEIGHT}px]">
+        <div>Main Page Content</div>
+        <FullHeightLayer
+          title="Panel Title"
+          headerHeight={HEADER_HEIGHT}
+          isVisible={isLayerVisible}
+          onClose={toggleLayerVisibility}
+        />
+      </main>
+    </div>
+  );
+}
+``` 
