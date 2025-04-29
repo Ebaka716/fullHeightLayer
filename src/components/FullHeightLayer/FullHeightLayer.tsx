@@ -24,7 +24,7 @@ export function FullHeightLayer({
   onClose,
 }: FullHeightLayerProps) {
   const [isMenuViewOpen, setIsMenuViewOpen] = useState(false);
-  const [layerWidth, setLayerWidth] = useState(INITIAL_LAYER_WIDTH);
+  const [layerWidth, setLayerWidth] = useState(Math.max(INITIAL_LAYER_WIDTH, MIN_LAYER_WIDTH));
   const [isResizing, setIsResizing] = useState(false);
   const layerRef = useRef<HTMLDivElement>(null);
 
