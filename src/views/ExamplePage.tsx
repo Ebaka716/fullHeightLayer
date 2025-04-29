@@ -20,7 +20,7 @@ export default function ExamplePage() {
   // Updated header content with toggle button
   const headerContent = (
     <div className="flex items-center justify-between w-full">
-      <span className="text-lg font-semibold">My App</span>
+      <span className="text-lg font-semibold">embedded UI</span>
       {/* Add Collapse/Uncollapse Button */}
       <Button
         variant="ghost"
@@ -46,18 +46,36 @@ export default function ExamplePage() {
         {headerContent}
       </header>
       <main className="flex h-full pt-[64px]">
-        {/* Main Page Content Area */}
+        {/* Main Page Content Area - Replaced with Table */}
         <div className="flex-1 p-4">
-          <h1 className="text-2xl font-bold mb-4">Main Content Area</h1>
-          <p>This is the primary content of the page. The FullHeightLayer sits alongside it.</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.</p>
+          <h2 className="text-xl font-semibold mb-4">Parent Page Content</h2>
+          <table className="w-full border-collapse border border-slate-400">
+            <thead>
+              <tr>
+                <th className="border border-slate-300 p-2 text-left font-semibold">Topic</th>
+                <th className="border border-slate-300 p-2 text-left font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border border-slate-300 p-2 align-top font-semibold">AI - Page interaction binding</td>
+                <td className="border border-slate-300 p-2 align-top">There is no expectation that iterations within the AI container will be reflected on the parent page. The parent page is unaware of the AI container's existence.</td>
+              </tr>
+              <tr>
+                <td className="border border-slate-300 p-2 align-top font-semibold">Design system</td>
+                <td className="border border-slate-300 p-2 align-top">Owns design of the AI container wrapper, elevation, and the parent page.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p className="text-center text-gray-500 mt-4 italic">A list of topics.</p> 
         </div>
 
-        {/* Pass isVisible state to the layer */}
+        {/* Pass isVisible state and onClose handler to the layer */}
         <FullHeightLayer
-          title="Details Panel"
+          title="Embedded Panel"
           headerHeight={HEADER_HEIGHT}
           isVisible={isLayerVisible}
+          onClose={toggleLayerVisibility}
         />
       </main>
     </div>
