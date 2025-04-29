@@ -59,7 +59,7 @@ export default function ExamplePage() {
             <tbody>
               <tr>
                 <td className="border border-slate-300 p-2 align-top font-semibold">AI - Page interaction binding</td>
-                <td className="border border-slate-300 p-2 align-top">There is no expectation that iterations within the AI container will be reflected on the parent page. The parent page is unaware of the AI container's existence.</td>
+                <td className="border border-slate-300 p-2 align-top">There is no expectation that iterations within the AI container will be reflected on the parent page. The parent page is unaware of the AI container&apos;s existence.</td>
               </tr>
               <tr>
                 <td className="border border-slate-300 p-2 align-top font-semibold">Design system</td>
