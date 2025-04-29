@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FullHeightLayer } from '@/components/FullHeightLayer/FullHeightLayer';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -9,6 +9,10 @@ import { cn } from "@/lib/utils";
 const HEADER_HEIGHT = 64;
 
 export default function ExamplePage() {
+  useEffect(() => {
+    document.title = 'Embedded UI';
+  }, []);
+
   // State for layer visibility
   const [isLayerVisible, setIsLayerVisible] = useState(true);
 
@@ -20,7 +24,7 @@ export default function ExamplePage() {
   // Updated header content with toggle button
   const headerContent = (
     <div className="flex items-center justify-between w-full">
-      <span className="text-lg font-semibold">embedded UI</span>
+      <span className="text-lg font-semibold">Embedded UI</span>
       {/* Add Collapse/Uncollapse Button */}
       <Button
         variant="ghost"
@@ -40,7 +44,7 @@ export default function ExamplePage() {
   return (
     <div className="flex flex-col min-h-screen">
       <header
-        className="fixed top-0 left-0 right-0 z-10 bg-blue-200 border-b h-[64px] flex items-center px-4"
+        className="fixed top-0 left-0 right-0 z-10 bg-blue-100 border-b h-[64px] flex items-center px-4"
         style={{ '--header-height': `${HEADER_HEIGHT}px` } as React.CSSProperties}
       >
         {headerContent}
